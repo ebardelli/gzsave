@@ -1,15 +1,32 @@
 pr de gzmerge
 * Merge a gzipped dataset
 *! 0.1 HS, Oct 13, 2009
-version 9.2
+*! 0.2 EB, Mar 29, 2018
+    version 11
 
-qui {
-  gettoken first 0: 0
-  
-  while (`"`first'"' != "using" & `"`first'"' != "") {
-    local vlist "`vlist' `first'"
-    gettoken first 0: 0
-  }
+    gettoken mtype 0 : 0, parse(" ,")
+
+    if (!strpos("`mtype'", ":") & "`mtype'"!="") {
+        if (_caller()>=11) {
+            di as smcl as txt "{p}"
+            di as smcl "(note: you are using old"
+            di as smcl "{bf:merge} syntax; see"
+            di as smcl "{bf:{help merge:[D] merge}} for new syntax)"
+            di as smcl "{p_end}"
+        }
+        merge_10 `mtype' `0'
+        exit
+    }
+
+    local mtype `"`mtype'"'
+
+    qui {
+        gettoken first 0: 0
+
+        while (`"`first'"' != "using" & `"`first'"' != "") {
+        local vlist "`vlist' `first'"
+        gettoken first 0: 0
+    }
   
   if "`vlist'" != "" {
     unab vlist : `vlist'
@@ -61,7 +78,7 @@ qui {
     gettoken gzfile anything2: anything2
   }
   
-  merge `vlist' using `filelist', `options'
+  merge `mtype' `vlist' using `filelist', `options'
 }
 end
 * Create filename to use with compressed save/use (gzsave and zipsave)
