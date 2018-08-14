@@ -5,6 +5,7 @@ pr de gzsave
 *! 0.3 HS, Oct 20, 2005 Set filename correctly after dataset saved
 *! 0.4 HS, May 4, 2006  Improved filename allocation + erase instead of rm
 *! 0.5 HS, Sep 7, 2009 Allow filenames enclosed in quotes
+*! o.6 EB, Aug 14, 2018 Allow to specify compression speed for gzip
 version 9.2
 syntax [anything(name=file)] [, replace Speed(integer 1) *]
 qui {
@@ -21,16 +22,16 @@ qui {
   local file = r(fileout)
 
   _ok2save, filename(`file') `replace'
-  
+
   tempfile tmpdat
   sa `tmpdat', `options'
-  
+
   shell gzip -c -`speed' `tmpdat' > "`file'"
 
   global S_FN = `"`file'"'
 
   noi di in green "data compressed with gzip and saved in file `file'"
-  
+
 }
 end
 * Create filename to use with compressed save/use (gzsave and zipsave)
@@ -55,7 +56,7 @@ return local fileout `"`filename'"'
 
 end
 
-  
+
 * OK to save filename with compressed save? (gzsave and zipsave)
 *! 0.1 HS, Oct 1, 2009
 pr de _ok2save
@@ -78,4 +79,4 @@ syntax , filename(string asis) [replace]
 
 end
 
-  
+

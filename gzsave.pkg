@@ -1,8 +1,8 @@
-d 'GZSAVE': module to save and use datasets compressed by gzip 
+d 'GZSAVE': module to save and use datasets compressed by gzip
 d
 d  these routines to save and use datasets compressed by gzip  in
 d order to save disk space and network load. They share syntax with
-d Stata's save, saveold and use commands. 
+d Stata's save, saveold and use commands.
 d
 d KW: gzip
 d KW: compression
@@ -11,10 +11,11 @@ d KW: use
 d
 d Requires: Stata version 9.2 and  gzip
 d
-d Distribution-Date: 20180329
+d Distribution-Date: 20180814
 d
 d Author: Henrik Stovring, Department of Biostatistics, University of Aarhus
-d Support: email stovring@@biostat.au.dk 
+d Author: Emanuele Bardelli, University of Michigan
+d Support: email bardelli@umich.edu
 d
 f gzsave.ado
 f gzsave.hlp
