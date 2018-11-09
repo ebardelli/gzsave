@@ -26,10 +26,7 @@ qui {
   tempfile tmpdat
   sa `tmpdat', `options'
 
-  tempfile tmpgz
-
-  shell gzip -c -`speed' `tmpdat' > `tmpgz'
-  copy `tmpgz' "`file'", replace
+  shell gzip -c -`speed' `tmpdat' > "`file'"
 
   global S_FN = `"`file'"'
 
