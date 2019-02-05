@@ -5,9 +5,10 @@ pr de gzsave
 *! 0.3 HS, Oct 20, 2005 Set filename correctly after dataset saved
 *! 0.4 HS, May 4, 2006  Improved filename allocation + erase instead of rm
 *! 0.5 HS, Sep 7, 2009 Allow filenames enclosed in quotes
-*! o.6 EB, Aug 14, 2018 Allow to specify compression speed for gzip
+*! 0.6 EB, Aug 14, 2018 Allow to specify compression speed for gzip
+*! 0.7 EB, Feb 5, 2019 Add support for pigz
 version 9.2
-syntax [anything(name=file)] [, replace Speed(integer 1) *]
+syntax [anything(name=file)] [, replace Speed(integer 1) pigz *]
 qui {
 
   if `"`file'"' == "" {
@@ -18,6 +19,14 @@ qui {
     }
   }
 
+  ** Default to gzip if no program name was set
+  if !missing("`pigz'") {
+    local gzip "pigz"
+  }
+  else {
+    local gzip "gzip"
+  }
+
   _gfn, filename(`file') extension(.dta.gz)
   local file = r(fileout)
 
@@ -26,7 +35,7 @@ qui {
   tempfile tmpdat
   sa `tmpdat', `options'
 
-  shell gzip -c -`speed' `tmpdat' > "`file'"
+  shell `gzip' -c -`speed' `tmpdat' > "`file'"
 
   global S_FN = `"`file'"'
 
