@@ -8,7 +8,7 @@ pr de gzsave
 *! 0.6 EB, Aug 14, 2018 Allow to specify compression speed for gzip
 *! 0.7 EB, Feb 5, 2019 Add support for pigz
 version 9.2
-syntax [anything(name=file)] [, replace Speed(integer 1) pigz *]
+syntax [anything(name=file)] [, replace Speed(integer 1) which(string) *]
 qui {
 
   if `"`file'"' == "" {
@@ -20,12 +20,8 @@ qui {
   }
 
   ** Default to gzip if no program name was set
-  if !missing("`pigz'") {
-    whereis pigz
-    local gzip "`r(pigz)'"
-  }
-  else {
-    local gzip "gzip"
+  if missing("`which'") {
+    local which "gzip"
   }
 
   _gfn, filename(`file') extension(.dta.gz)
@@ -36,7 +32,7 @@ qui {
   tempfile tmpdat
   sa `tmpdat', `options'
 
-  shell `gzip' -c -`speed' `tmpdat' > "`file'"
+  shell `which' -c -`speed' `tmpdat' > "`file'"
 
   global S_FN = `"`file'"'
 
