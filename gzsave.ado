@@ -21,7 +21,8 @@ qui {
 
   ** Default to gzip if no program name was set
   if !missing("`pigz'") {
-    local gzip "pigz"
+    whereis pigz
+    local gzip "`r(pigz)'"
   }
   else {
     local gzip "gzip"
