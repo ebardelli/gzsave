@@ -10,7 +10,12 @@ qui {
     exit 100
   }
   
-  syntax anything(name=gzfile) [, *]
+  syntax anything(name=gzfile) [, which(string) *]
+
+  ** Default to gzip if no program name was set
+  if missing("`which'") {
+    local which "gzip"
+  }
 
   _gfn, filename(`gzfile') extension(.dta.gz)
   local gzfile = r(fileout)
@@ -23,7 +28,7 @@ qui {
   }
 
   tempfile tmpdat
-  shell gzip -dc "`gzfile'" > `tmpdat'
+  shell `which' -dc "`gzfile'" > `tmpdat'
   append using `tmpdat', `options'
 }
 end

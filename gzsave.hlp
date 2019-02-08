@@ -40,8 +40,7 @@ help for {hi:gzsave}, {hi:gzsaveold}, {hi:gzuse}, {hi:gzappend}, {hi:gzmerge}{ri
 
 {p 4 4 2} which should return something like '/usr/bin/gzip'. On Windows the gzip.exe must similarly be found in the path, cf. the documentation on your Windows version. The easiest way to check if your path is set up correctly on Windows is to try out {cmd:gzsave} and {cmd:gzuse} on a test dataset (ie. an artificial dataset you can afford to lose!). {hi:If it does not work, the most likely explanation is that you either have not installed gzip or your path is not configured correctly.}
 
-{p 4 4 2} In principle, the command should work on any system with gzip installed and ordinary shell commands available. The command has however only been tested on the platforms mentioned above, so as always {hi:use at your own risk!}
-
+{p 4 4 2} In principle, the command should work on any system with gzip installed and ordinary shell commands available. The command has however only been tested on the platforms mentioned above, so as always {hi:use at your own risk!}. If stata cannot find the gzip binary, you can specify it using the {cmd: which} option.
 
 {title:Options}
 
@@ -77,6 +76,7 @@ help for {hi:gzsave}, {hi:gzsaveold}, {hi:gzuse}, {hi:gzappend}, {hi:gzmerge}{ri
 
     {cmd:. gzsave myfile}
     {cmd:. gzsave myfile, replace}
+    {cmd: . gzsave myfile, replace which(/usr/local/bin)}
 
     {cmd:. gzuse myfile}
     {cmd:. gzuse myfile, clear}

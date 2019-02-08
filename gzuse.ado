@@ -25,16 +25,21 @@ if `"`first'"' == "using" {
   local usind = "using"
 }
 
-syntax anything(name=encfile) [, clear *]
+syntax anything(name=encfile) [, which(string) clear *]
 
 qui {
-  
+ 
+  ** Default to gzip if no program name was set
+  if missing("`which'") {
+    local which "gzip"
+  }
+
   _gfn, filename(`encfile') extension(.dta.gz)
   local encfile = r(fileout)
   
   _ok2use, filename(`encfile') `clear'
   tempfile tmpdat
-  shell gzip -dc "`encfile'" > `tmpdat'
+  shell `which' -dc "`encfile'" > `tmpdat'
 
   use `initlist' `usind' `tmpdat', clear `options'
   global S_FN = "`encfile'"

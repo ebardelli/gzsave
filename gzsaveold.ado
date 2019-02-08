@@ -2,7 +2,7 @@ pr de gzsaveold
 * Save as gzipped dataset in old format
 *! 0.1 HS, Nov 7, 2007
 version 9.2
-syntax [anything(name=file)] [, replace *]
+syntax [anything(name=file)] [, which(string) replace *]
 qui {
 
   if `"`file'"' == "" {
@@ -13,6 +13,10 @@ qui {
     }
   }
 
+  if missing("`which'") {
+    local which = "gzip"
+  }
+
   _gfn, filename(`file') extension(.dta.gz)
   local file = r(fileout)
 
@@ -21,7 +25,7 @@ qui {
   tempfile tmpdat
   saveold `tmpdat', `options'
   
-  shell gzip -c --fast `tmpdat' > "`file'"
+  shell `which' -c --fast `tmpdat' > "`file'"
   global S_FN = `"`file'"'
 
   noi di in green "data compressed with gzip and saved in file `file'"

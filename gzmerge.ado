@@ -44,10 +44,15 @@ pr de gzmerge
     exit 100
   }
   else {
-    syntax anything(id="gzfilelist") [, *]
+    syntax anything(id="gzfilelist") [, which(string) *]
   }
   local anything2 `"`anything'"'
   
+  ** Default to gzip if no program name was set
+  if missing("`which'") {
+    local which "gzip"
+  }
+
   gettoken gzfile anything: anything
   while (`"`gzfile'"' ~= "") {
     
@@ -71,7 +76,7 @@ pr de gzmerge
     local gzfile = r(fileout)
     
     tempfile tmpdat`fn'
-    shell gzip -dc "`gzfile'" > `tmpdat`fn''
+    shell `which' -dc "`gzfile'" > `tmpdat`fn''
     local filelist = "`filelist' `tmpdat`fn''"
     local fn = `fn' + 1
     
