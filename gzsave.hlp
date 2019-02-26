@@ -48,6 +48,8 @@ help for {hi:gzsave}, {hi:gzsaveold}, {hi:gzuse}, {hi:gzappend}, {hi:gzmerge}{ri
 
 {p 4 8 2}{cmd:clear} permits the data to be loaded even if there is a dataset already in memory and even if that dataset has changed since it was last saved.
 
+{p 4 8 2}{cmd:which(path)} permits to specify the path to the {cmd:gzip} executable in case stata does not find it. It is also possible to use gzip-compatible compression utilities (e.g., pigz) to compress the data.
+
 {p 4 8 2}save_options are all options available with {help save}.
 
 {p 4 8 2}saveold_options are all options available with {help saveold}.
@@ -76,7 +78,7 @@ help for {hi:gzsave}, {hi:gzsaveold}, {hi:gzuse}, {hi:gzappend}, {hi:gzmerge}{ri
 
     {cmd:. gzsave myfile}
     {cmd:. gzsave myfile, replace}
-    {cmd: . gzsave myfile, replace which(/usr/local/bin)}
+    {cmd:. gzsave myfile, replace which(/usr/local/bin/gzip)}
 
     {cmd:. gzuse myfile}
     {cmd:. gzuse myfile, clear}

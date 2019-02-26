@@ -33,10 +33,19 @@ qui {
   sa `tmpdat', `options'
 
   shell `which' -c -`speed' `tmpdat' > "`file'"
+  
+  ** Check if the final dataset exists
+  quietly checksum "`file'"
+  if `r(filelen)' == 0 {
+    rm "`file'"
+    di in red "Do you have `which' in your path? Use the option which() to specify the compression program to use."
+    error 688
+    exit
+  }
 
   global S_FN = `"`file'"'
 
-  noi di in green "data compressed with gzip and saved in file `file'"
+  noi di in green "data compressed with `which' and saved in file `file'"
 
 }
 end
