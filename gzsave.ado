@@ -33,10 +33,20 @@ qui {
   sa `tmpdat', `options'
 
   shell `which' -c -`speed' `tmpdat' > "`file'"
-  
+
+  local filelen = ""
+
+  mata {
+    fname = st_local("file")
+    fh = fopen(fname, "r")
+    filepos = _fseek(fh, 0, 1)
+    if (filepos >= 0) fsize = ftell(fh)
+    fclose(fh)
+    st_local("filelen", strofreal(fsize))
+  }
+
   ** Check if the final dataset exists
-  quietly checksum "`file'"
-  if `r(filelen)' == 0 {
+  if ("`filelen'" == "0") {
     rm "`file'"
     di in red "Do you have `which' in your path? Use the option which() to specify the compression program to use."
     error 688
@@ -46,9 +56,10 @@ qui {
   global S_FN = `"`file'"'
 
   noi di in green "data compressed with `which' and saved in file `file'"
-
 }
+
 end
+
 * Create filename to use with compressed save/use (gzsave and zipsave)
 *! 0.1 HS, Oct 1, 2009
 pr de _gfn, rclass
@@ -67,7 +78,6 @@ if index(r(filename), ".") == 0 {
   local filename "`filename'`extension'"
 }
 return local fileout `"`filename'"'
-
 
 end
 
@@ -91,7 +101,5 @@ syntax , filename(string asis) [replace]
     }
   }
 
-
 end
-
 
