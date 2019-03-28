@@ -27,7 +27,7 @@ qui {
   _gfn, filename(`file') extension(.dta.gz)
   local file = r(fileout)
 
-  _ok2save, filename(`file') `replace'
+  noi _ok2save, filename(`file') `replace'
 
   tempfile tmpdat
   sa `tmpdat', `options'
@@ -97,7 +97,8 @@ syntax , filename(string asis) [replace]
       erase "`filename'"
     }
     else {
-      di in green `"(note: file `filename' not found)"'
+       confirm new file "`filename'"
+       di in green `"(note: file `filename' not found)"'
     }
   }
 
